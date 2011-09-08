@@ -1,10 +1,10 @@
 /*
   Space Invader, a shoot-them-up game for LOL Shield for Arduino
   Copyright 2009/2010 Benjamin Sonntag <benjamin@sonntag.fr> http://benjamin.sonntag.fr/
-  
+
   History:
   	2009-12-30 - V0.0 Initial code at Berlin during 26C3
-  	2009-12-31 - V1.0 Score Drawing, at Berlin after 26C3 ;) 
+  	2009-12-31 - V1.0 Score Drawing, at Berlin after 26C3 ;)
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -26,8 +26,6 @@
 #include "Figure.h"
 #include "Font.h"
 
-#include "WProgram.h"
-
 
 /* -----------------------------------------------------------------  */
 /* -----------------------------------------------------------------  */
@@ -38,9 +36,9 @@
 
 // Number of fire we can use before having to wait
 #define MAXFIRE 3
-// Number of lives you have : 
+// Number of lives you have :
 #define STARTLIVES 4
-// Maximum number of ennemies at one : 
+// Maximum number of ennemies at one :
 #define MAXENNEMIES 8
 // Speed of ennemies arrival :  (between 0 & 20, 20 = rare, 0 = often )
 #define ENNEMIESRATE 6
@@ -68,10 +66,10 @@ uint8_t ennemypos[8][4]={
  * @param set 1 or 0 to set or clear the led.
  */
 void drawShip(int set=1) {
-    LedSign::Set(0,shippos-1,set); 
-    LedSign::Set(0,shippos  ,set); 
-    LedSign::Set(0,shippos+1,set); 
-    LedSign::Set(1,shippos  ,set); 
+    LedSign::Set(0,shippos-1,set);
+    LedSign::Set(0,shippos  ,set);
+    LedSign::Set(0,shippos+1,set);
+    LedSign::Set(1,shippos  ,set);
 }
 
 
@@ -80,7 +78,7 @@ void drawShip(int set=1) {
  */
 void drawLives() {
   for(int i=0;i<STARTLIVES;i++) {
-    LedSign::Set(13-i,0,(i<lives)?1:0); 
+    LedSign::Set(13-i,0,(i<lives)?1:0);
   }
 }
 
@@ -90,12 +88,12 @@ void drawLives() {
 /** end of the game, draw the Scores using a scrolling
  */
 void endGame() {
-  for(int x=4;x<=8;x++) 
-  for(int y=0;y<=8;y++) 
+  for(int x=4;x<=8;x++)
+  for(int y=0;y<=8;y++)
     LedSign::Set(x,y,0);
-  
+
   Figure::Scroll90(score);
-  
+
   for(int i=0;i<30;i++) {
    drawShip(0);
    delay(5*(30-i));
@@ -142,7 +140,7 @@ void moveShip()
 
 /* -----------------------------------------------------------------  */
 /** Check the fire button and fire if it has been pushed.
- * Please note that we use a static status to check that the user 
+ * Please note that we use a static status to check that the user
  * pull the button between each fire.
  */
 void fireShip()
@@ -152,7 +150,7 @@ void fireShip()
   if (status==0) {
     // Ship may fire 10 times (not more...)
     if (analogRead(4)>1000) {
-        // FIRE ! 
+        // FIRE !
         status=1;
         for(i=0;i<MAXFIRE;i++) {
           if (firepos[i][0]==0) {
@@ -199,7 +197,7 @@ void crash() {
    }
    LedSign::Clear();
    drawLives();
-   drawShip();   
+   drawShip();
 }
 
 
@@ -230,16 +228,16 @@ void moveEnnemies()
 {
   static int cnt=0;
   int i;
-  cnt++; 
+  cnt++;
   for(i=0;i<MAXENNEMIES;i++) {
     if (ennemypos[i][0]!=0) {
       ennemypos[i][3]++;
       if (ennemypos[i][2]==ennemypos[i][3]) {
         ennemypos[i][3]=0;
-        LedSign::Set(ennemypos[i][0],ennemypos[i][1],0);       
+        LedSign::Set(ennemypos[i][0],ennemypos[i][1],0);
         ennemypos[i][0]--;
         // collision with the top of the ship
-        if (ennemypos[i][0]==1 && shippos==ennemypos[i][1]) { 
+        if (ennemypos[i][0]==1 && shippos==ennemypos[i][1]) {
           crash();
         } else {
           if (ennemypos[i][0]==0) { // Collision detection
@@ -247,13 +245,13 @@ void moveEnnemies()
             if (score>0) score-=1;
             if (shippos==ennemypos[i][1] || shippos-1==ennemypos[i][1] || shippos+1==ennemypos[i][1]) {
               crash();
-            } else {              
-              LedSign::Set(ennemypos[i][0],ennemypos[i][1],0);                 
+            } else {
+              LedSign::Set(ennemypos[i][0],ennemypos[i][1],0);
             }
           }
         }
       } else {
-        LedSign::Set(ennemypos[i][0],ennemypos[i][1],1);                 
+        LedSign::Set(ennemypos[i][0],ennemypos[i][1],1);
       }
     }
   }
@@ -262,21 +260,21 @@ void moveEnnemies()
 
 /* -----------------------------------------------------------------  */
 /** Move the bullets, draw them, and check the collision with
- * ennemies. 
+ * ennemies.
  */
 void moveFires()
 {
   int i,j;
   for(i=0;i<MAXFIRE;i++) {
     if (firepos[i][0]!=0) {
-      LedSign::Set(firepos[i][0],firepos[i][1],0);       
+      LedSign::Set(firepos[i][0],firepos[i][1],0);
       firepos[i][0]++;
-      // Let's detect collision with ennemies : 
+      // Let's detect collision with ennemies :
       for(j=0;j<MAXENNEMIES;j++) {
         if (ennemypos[j][0]!=0) {
-          if ((ennemypos[j][0]==firepos[i][0] || ennemypos[j][0]==firepos[i][0]+1) && ennemypos[j][1]==firepos[i][1]) {  
+          if ((ennemypos[j][0]==firepos[i][0] || ennemypos[j][0]==firepos[i][0]+1) && ennemypos[j][1]==firepos[i][1]) {
               // Ennemy destroyed
-              LedSign::Set(ennemypos[j][0],ennemypos[j][1],0);                 
+              LedSign::Set(ennemypos[j][0],ennemypos[j][1],0);
               ennemypos[j][0]=0;
               firepos[i][0]=0;
               score+=(6-ennemypos[j][2]); // Change it in case of ennemy speed change ;) score is 5-speed
@@ -286,7 +284,7 @@ void moveFires()
       if (firepos[i][0]==14) {
         firepos[i][0]=0;
       } else {
-        LedSign::Set(firepos[i][0],firepos[i][1],1);                 
+        LedSign::Set(firepos[i][0],firepos[i][1],1);
       }
     }
   }
@@ -299,9 +297,9 @@ void moveFires()
 void setup()                    // run once, when the sketch starts
 {
   LedSign::Init();
-  randomSeed(analogRead(2));  
+  randomSeed(analogRead(2));
   Serial.begin(9600);
-  
+
   initGame();
   drawShip();
 }
@@ -324,7 +322,7 @@ char test[]="COUCOU !  SALUT !";
       x2=Font::Draw(test[i],x,0);
       x+=x2;
       if (x>=13) break;
-    }  
+    }
     delay(100);
   }
   delay(10000);

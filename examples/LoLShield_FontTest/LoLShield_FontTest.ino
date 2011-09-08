@@ -1,9 +1,9 @@
 /*
   TEXT SAMPLE CODE for LOL Shield for Arduino
   Copyright 2009/2010 Benjamin Sonntag <benjamin@sonntag.fr> http://benjamin.sonntag.fr/
-  
+
   History:
-  	2009-12-31 - V1.0 FONT Drawing, at Berlin after 26C3 ;) 
+  	2009-12-31 - V1.0 FONT Drawing, at Berlin after 26C3 ;)
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -23,11 +23,6 @@
 
 #include "Charliplexing.h"
 #include "Font.h"
-
-#include "WProgram.h"
-
-
-
 
 
 /* -----------------------------------------------------------------  */
@@ -55,7 +50,7 @@ char test[]="HELLO WORLD   !     ";
       x2=Font::Draw(test[i],x,0);
       x+=x2;
       if (x>=13) break;
-    }  
+    }
     delay(80);
   }
   delay(3000);
