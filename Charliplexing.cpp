@@ -1,15 +1,15 @@
 /*
   Charliplexing.cpp - Using timer2 with 1ms resolution
-  
+
   Alex Wenger <a.wenger@gmx.de> http://arduinobuch.wordpress.com/
   Matt Mets <mahto@cibomahto.com> http://cibomahto.com/
-  
+
   Timer init code from MsTimer2 - Javier Valencia <javiervalencia80@gmail.com>
   Misc functions from Benjamin Sonnatg <benjamin@sonntag.fr>
-  
+
   History:
     2009-12-30 - V0.0 wrote the first version at 26C3/Berlin
-    2010-01-01 - V0.1 adding misc utility functions 
+    2010-01-01 - V0.1 adding misc utility functions
       (Clear, Vertical,  Horizontal) comment are Doxygen complaints now
     2010-05-27 - V0.2 add double-buffer mode
 
@@ -28,7 +28,7 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#include "WProgram.h"
+#include "Arduino.h"
 #include <inttypes.h>
 #include <avr/interrupt.h>
 #include "Charliplexing.h"
@@ -114,7 +114,7 @@ const LEDPosition ledMap[126] = {
 
 
 /* -----------------------------------------------------------------  */
-/** Constructor : Initialize the interrupt code. 
+/** Constructor : Initialize the interrupt code.
  * should be called by setup() in the main Arduino sketch
  */
 void LedSign::Init(uint8_t mode)
@@ -136,11 +136,11 @@ void LedSign::Init(uint8_t mode)
     TCCR2B |= (1<<CS22);
     TCCR2B &= ~((1<<CS21) | (1<<CS20));
     prescaler = 65.0;
-	
+
 	tcnt2 = 256 - (int)((float)F_CPU * 0.0005 / prescaler);
 
     LedSign::SetBrightness(127);
-	
+
 	TCNT2 = tcnt2;
 	TIMSK2 |= (1<<TOIE2);
 
@@ -191,8 +191,8 @@ void LedSign::Flip(bool blocking)
  * @param set if 1 : make all led ON, if not set or 0 : make all led OFF
  */
 void LedSign::Clear(int set) {
-    for(int x=0;x<14;x++)  
-        for(int y=0;y<9;y++) 
+    for(int x=0;x<14;x++)
+        for(int y=0;y<9;y++)
             Set(x,y,set);
 }
 
@@ -203,7 +203,7 @@ void LedSign::Clear(int set) {
  * @param set if 1 : make all led ON, if not set or 0 : make all led OFF
  */
 void LedSign::Horizontal(int y, int set) {
-    for(int x=0;x<14;x++)  
+    for(int x=0;x<14;x++)
         Set(x,y,set);
 }
 
@@ -214,7 +214,7 @@ void LedSign::Horizontal(int y, int set) {
  * @param set if 1 : make all led ON, if not set or 0 : make all led OFF
  */
 void LedSign::Vertical(int x, int set) {
-    for(int y=0;y<9;y++)  
+    for(int y=0;y<9;y++)
         Set(x,y,set);
 }
 
@@ -228,7 +228,7 @@ void LedSign::Set(uint8_t x, uint8_t y, uint8_t c)
 {
     uint8_t pin_high = ledMap[x+y*14].high;
     uint8_t pin_low  = ledMap[x+y*14].low;
-    // pin_low is directly the address in the led array (minus 2 because the 
+    // pin_low is directly the address in the led array (minus 2 because the
     // first two bytes are used for RS232 communication), but
     // as it is a two byte array we need to check pin_high also.
     // If pin_high is bigger than 8 address has to be increased by one
@@ -238,7 +238,7 @@ void LedSign::Set(uint8_t x, uint8_t y, uint8_t c)
 
     if (c == 1) {
         workBuffer[bufferNum] |= work;   // ON
-    } 
+    }
     else {
         workBuffer[bufferNum] &= ~work;   // OFF
     }
@@ -264,7 +264,7 @@ void LedSign::SetBrightness(uint8_t brightness)
 
 
 /* -----------------------------------------------------------------  */
-/** The Interrupt code goes here !  
+/** The Interrupt code goes here !
  */
 
 #define MIN_ISR_TIME 250
@@ -329,10 +329,10 @@ ISR(TIMER2_OVF_vect) {
     DDRD = pinDirLow;
     DDRB = pinDirHigh;
 #else // defined (__AVR_ATmega1280__) || defined (__AVR_ATmega2560__)
-    //port E mappings 
+    //port E mappings
     DDRE = (DDRE & (~0x38)) | ((pinDirLow << 2) & 0x30) | ((pinDirLow >> 2) & 0x8);
-    PORTE = (PORTE & (~0x38)) | ((pinDataLow << 2) & 0x30) | ((pinDataLow >> 2) & 0x8);	
-    //port G mappings 
+    PORTE = (PORTE & (~0x38)) | ((pinDataLow << 2) & 0x30) | ((pinDataLow >> 2) & 0x8);
+    //port G mappings
     DDRG = (DDRG & (~0x20)) | ((pinDirLow << 1) & 0x20);
     PORTG = (PORTG & (~0x20)) | ((pinDataLow << 1) & 0x20);
     //port H mappings
@@ -340,7 +340,7 @@ ISR(TIMER2_OVF_vect) {
     PORTH = (PORTH & (~0x78)) | ((pinDataLow >> 3) & 0x18) | ((pinDataHigh << 5) & 0x60);
     //port B mappings
     DDRB = (DDRB & (~0xf0)) | ((pinDirHigh << 2) & 0xf0);
-    PORTB = (PORTB & (~0xf0)) | ((pinDataHigh << 2) & 0xf0);	
+    PORTB = (PORTB & (~0xf0)) | ((pinDataHigh << 2) & 0xf0);
 #endif
 
         i++;
