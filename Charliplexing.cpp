@@ -236,7 +236,7 @@ void LedSign::Set(uint8_t x, uint8_t y, uint8_t c)
     uint8_t bufferNum = (pin_low-2)*2 + (pin_high / 8) + ((pin_high > 7)?24:0);
     uint8_t work = _BV(pin_high & 0x07);
 
-    if (c == 1) {
+    if (c != 0) {
         workBuffer[bufferNum] |= work;   // ON
     }
     else {
