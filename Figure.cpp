@@ -93,7 +93,7 @@ void Figure::Draw90(int figure,int x,int y,int set) {
  * remove unused figures (0 at the left)
  * valid for up to 7 figures.
  * @param value is the value to draw and scroll
- * @param x is the coordinate where we put the top of the figure [0-13]
+ * @param x is the coordinate where we put the top of the figure [0-8]
 */
 void Figure::Scroll(unsigned long value,uint8_t y) {
   int i,j,k;
@@ -109,15 +109,22 @@ void Figure::Scroll(unsigned long value,uint8_t y) {
   j=0;
   while (figures[j]==0 && j<6) j++;
 
-  for(i=0;i<14+(7-j)*5;i++) {
+  for(i=0;i<LedSign::Width+(7-j)*5;i++) {
     for(k=j;k<=6;k++)
-      Figure::Draw(figures[k],-i+14+4*(k-j), y, 1);
+      Figure::Draw(figures[k],-i+LedSign::Width+4*(k-j), y, 1);
     delay(100);
     for(k=j;k<=6;k++)
-      Figure::Draw(figures[k],-i+14+4*(k-j),y, 0);
+      Figure::Draw(figures[k],-i+LedSign::Width+4*(k-j),y, 0);
   }
 }
 
+/* -----------------------------------------------------------------  */
+/** Scroll a number from right to left
+ * remove unused figures (0 at the left)
+ * valid for up to 7 figures.
+ * @param value is the value to draw and scroll
+ * @param x is the coordinate where we put the top of the figure [0-13]
+*/
 void Figure::Scroll90(unsigned long value,uint8_t x) {
   int i,j,k;
   uint8_t figures[]={
@@ -132,12 +139,12 @@ void Figure::Scroll90(unsigned long value,uint8_t x) {
   j=0;
   while (figures[j]==0 && j<6) j++;
 
-  for(i=0;i<9+(7-j)*5;i++) {
+  for(i=0;i<LedSign::Height+(7-j)*5;i++) {
     for(k=j;k<=6;k++)
-      Figure::Draw90(figures[k],x,-i+9+4*(k-j) ,1);
+      Figure::Draw90(figures[k],x,-i+LedSign::Height+4*(k-j) ,1);
     delay(100);
     for(k=j;k<=6;k++)
-      Figure::Draw90(figures[k],x,-i+9+4*(k-j) ,0);
+      Figure::Draw90(figures[k],x,-i+LedSign::Height+4*(k-j) ,0);
   }
 }
 
