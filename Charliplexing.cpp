@@ -46,6 +46,9 @@
 
 volatile unsigned int LedSign::tcnt2;
 
+const uint8_t LedSign::Width = 14;
+const uint8_t LedSign::Height = 9;
+
 /* -----------------------------------------------------------------  */
 /** Table for the LED multiplexing cycles, containing 24 cycles made out of two bytes
  */
