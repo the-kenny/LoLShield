@@ -30,13 +30,13 @@
 namespace Figure
 {
 
-extern void Draw(int figure,int x,int y,int set=1);
+extern void Draw(int figure, int x, int y, int set = 1);
 
-extern void Draw90(int figure,int x,int y,int set=1);
+extern void Draw90(int figure, int x, int y, int set = 1);
 
-extern void Scroll(unsigned long value,uint8_t y=3);
+extern void Scroll(unsigned long value, uint8_t y = 3);
 
-extern void Scroll90(unsigned long value,uint8_t x=3);
+extern void Scroll90(unsigned long value, uint8_t x = 3);
 
 }
 

@@ -50,16 +50,16 @@ uint8_t figuresData[][14][2] = {
  * @param x,y coordinates,
  * @param set is 1 or 0 to draw or clear it
  */
-void Figure::Draw(int figure,int x,int y,int set) {
-  for(int i=0;i<14;i++) {
-      if (figuresData[figure][i][0]==9) break;
+void Figure::Draw(int figure, int x, int y, int set) {
+  for(int i = 0; i < 14; i++) {
+      if (figuresData[figure][i][0] == 9) break;
       if (
-        figuresData[figure][i][0]+x<13 &&
-        figuresData[figure][i][0]+x>=0 &&
-        figuresData[figure][i][1]+y<8 &&
-        figuresData[figure][i][1]+y>=0
+        figuresData[figure][i][0]+x <  13 &&
+        figuresData[figure][i][0]+x >=  0 &&
+        figuresData[figure][i][1]+y <   8 &&
+        figuresData[figure][i][1]+y >=  0
        ) {
-           LedSign::Set(figuresData[figure][i][0]+x,figuresData[figure][i][1]+y,set);
+           LedSign::Set(figuresData[figure][i][0]+x, figuresData[figure][i][1]+y, set);
        }
   }
 }
@@ -74,15 +74,17 @@ void Figure::Draw(int figure,int x,int y,int set) {
  * @param set is 1 or 0 to draw or clear it
 */
 void Figure::Draw90(int figure,int x,int y,int set) {
-  for(int i=0;i<14;i++) {
-      if (figuresData[figure][i][0]==9) break;
+  for(int i = 0; i < 14; i++) {
+      if (figuresData[figure][i][0] == 9) break;
       if (
-        (5-figuresData[figure][i][1])+x<13 &&
-        (5-figuresData[figure][i][1])+x>=0 &&
-        figuresData[figure][i][0]+y<8 &&
-        figuresData[figure][i][0]+y>=0
+        (5-figuresData[figure][i][1])+x <  13 &&
+        (5-figuresData[figure][i][1])+x >=  0 &&
+        figuresData[figure][i][0]+y     <   8 &&
+        figuresData[figure][i][0]+y     >=  0
        ) {
-           LedSign::Set((5-figuresData[figure][i][1])+x,figuresData[figure][i][0]+y,set);
+           LedSign::Set((5-figuresData[figure][i][1])+x,
+                        figuresData[figure][i][0]+y,
+                        set);
        }
   }
 }
@@ -95,7 +97,7 @@ void Figure::Draw90(int figure,int x,int y,int set) {
  * @param value is the value to draw and scroll
  * @param x is the coordinate where we put the top of the figure [0-8]
 */
-void Figure::Scroll(unsigned long value,uint8_t y) {
+void Figure::Scroll(unsigned long value, uint8_t y) {
   int i,j,k;
   uint8_t figures[]={
     (value%10000000)/1000000,
@@ -106,15 +108,16 @@ void Figure::Scroll(unsigned long value,uint8_t y) {
     (value%100)/10,
     (value%10)
   };
-  j=0;
-  while (figures[j]==0 && j<6) j++;
+  j = 0;
+  while (figures[j] == 0 && j < 6)
+    j++;
 
-  for(i=0;i<LedSign::Width+(7-j)*5;i++) {
-    for(k=j;k<=6;k++)
-      Figure::Draw(figures[k],-i+LedSign::Width+4*(k-j), y, 1);
+  for(i = 0; i < LedSign::Width+(7-j)*5; i++) {
+    for(k = j; k <= 6; k++)
+      Figure::Draw(figures[k], -i+LedSign::Width+4*(k-j), y, 1);
     delay(100);
-    for(k=j;k<=6;k++)
-      Figure::Draw(figures[k],-i+LedSign::Width+4*(k-j),y, 0);
+    for(k = j; k <= 6; k++)
+      Figure::Draw(figures[k], -i+LedSign::Width+4*(k-j), y, 0);
   }
 }
 
@@ -125,7 +128,7 @@ void Figure::Scroll(unsigned long value,uint8_t y) {
  * @param value is the value to draw and scroll
  * @param x is the coordinate where we put the top of the figure [0-13]
 */
-void Figure::Scroll90(unsigned long value,uint8_t x) {
+void Figure::Scroll90(unsigned long value, uint8_t x) {
   int i,j,k;
   uint8_t figures[]={
     (value%10000000)/1000000,
@@ -136,15 +139,16 @@ void Figure::Scroll90(unsigned long value,uint8_t x) {
     (value%100)/10,
     (value%10)
   };
-  j=0;
-  while (figures[j]==0 && j<6) j++;
+  j = 0;
+  while (figures[j] == 0 && j < 6)
+    j++;
 
-  for(i=0;i<LedSign::Height+(7-j)*5;i++) {
-    for(k=j;k<=6;k++)
-      Figure::Draw90(figures[k],x,-i+LedSign::Height+4*(k-j) ,1);
+  for(i = 0; i < LedSign::Height+(7-j)*5; i++) {
+    for(k = j; k <= 6; k++)
+      Figure::Draw90(figures[k], x, -i+LedSign::Height+4*(k-j), 1);
     delay(100);
-    for(k=j;k<=6;k++)
-      Figure::Draw90(figures[k],x,-i+LedSign::Height+4*(k-j) ,0);
+    for(k = j; k <= 6; k++)
+      Figure::Draw90(figures[k], x, -i+LedSign::Height+4*(k-j), 0);
   }
 }
 
