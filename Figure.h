@@ -2,7 +2,7 @@
   Figure drawing library
 
   Copyright 2009/2010 Benjamin Sonntag <benjamin@sonntag.fr> http://benjamin.sonntag.fr/
-  
+
   History:
   	2010-01-01 - V0.0 Initial code at Berlin after 26C3
 
@@ -33,6 +33,8 @@ namespace Figure
 extern void Draw(int figure,int x,int y,int set=1);
 
 extern void Draw90(int figure,int x,int y,int set=1);
+
+extern void Scroll(unsigned long value,uint8_t y=3);
 
 extern void Scroll90(unsigned long value,uint8_t x=3);
 
