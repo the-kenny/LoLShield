@@ -229,6 +229,9 @@ void LedSign::Vertical(int x, int set) {
  */
 void LedSign::Set(uint8_t x, uint8_t y, uint8_t c)
 {
+  if(x >= LedSign::Width || y >= LedSign::Height)
+    return;
+
     uint8_t pin_high = ledMap[x+y*14].high;
     uint8_t pin_low  = ledMap[x+y*14].low;
     // pin_low is directly the address in the led array (minus 2 because the
