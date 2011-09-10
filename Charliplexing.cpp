@@ -206,6 +206,9 @@ void LedSign::Clear(int set) {
  * @param set if 1 : make all led ON, if not set or 0 : make all led OFF
  */
 void LedSign::Horizontal(int y, int set) {
+  if(y >= LedSign::Height)
+    return;
+
     for(int x=0;x<14;x++)
         Set(x,y,set);
 }
@@ -217,6 +220,9 @@ void LedSign::Horizontal(int y, int set) {
  * @param set if 1 : make all led ON, if not set or 0 : make all led OFF
  */
 void LedSign::Vertical(int x, int set) {
+  if(x >= LedSign::Width)
+    return;
+
     for(int y=0;y<9;y++)
         Set(x,y,set);
 }
