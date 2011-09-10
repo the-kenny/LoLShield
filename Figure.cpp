@@ -51,15 +51,17 @@ uint8_t figuresData[][14][2] = {
  * @param set is 1 or 0 to draw or clear it
  */
 void Figure::Draw(int figure, int x, int y, int set) {
-  for(int i = 0; i < 14; i++) {
-      if (figuresData[figure][i][0] == 9) break;
+  for(int i = 0; i < LedSign::Width; i++) {
+      if (figuresData[figure][i][0] == LedSign::Height) break;
       if (
-        figuresData[figure][i][0]+x <  13 &&
+        figuresData[figure][i][0]+x <   LedSign::Width &&
         figuresData[figure][i][0]+x >=  0 &&
-        figuresData[figure][i][1]+y <   8 &&
+        figuresData[figure][i][1]+y <   LedSign::Height &&
         figuresData[figure][i][1]+y >=  0
        ) {
-           LedSign::Set(figuresData[figure][i][0]+x, figuresData[figure][i][1]+y, set);
+           LedSign::Set(figuresData[figure][i][0]+x,
+                        figuresData[figure][i][1]+y,
+                        set);
        }
   }
 }
@@ -74,12 +76,12 @@ void Figure::Draw(int figure, int x, int y, int set) {
  * @param set is 1 or 0 to draw or clear it
 */
 void Figure::Draw90(int figure,int x,int y,int set) {
-  for(int i = 0; i < 14; i++) {
-      if (figuresData[figure][i][0] == 9) break;
+  for(int i = 0; i < LedSign::Width; i++) {
+      if (figuresData[figure][i][0] == LedSign::Height) break;
       if (
-        (5-figuresData[figure][i][1])+x <  13 &&
+        (5-figuresData[figure][i][1])+x <   LedSign::Width &&
         (5-figuresData[figure][i][1])+x >=  0 &&
-        figuresData[figure][i][0]+y     <   8 &&
+        figuresData[figure][i][0]+y     <   LedSign::Height &&
         figuresData[figure][i][0]+y     >=  0
        ) {
            LedSign::Set((5-figuresData[figure][i][1])+x,
