@@ -4,7 +4,7 @@
   Font drawing library
 
   Copyright 2009/2010 Benjamin Sonntag <benjamin@sonntag.fr> http://benjamin.sonntag.fr/
-  
+
   History:
   	2010-01-01 - V0.0 Initial code at Berlin after 26C3
 
@@ -117,10 +117,10 @@ prog_uchar* font2[] = { 0,  0,  0,  0,  0,  0,  letters_97 /*a*/,  letters_98 /*
 #endif
 
 /* -----------------------------------------------------------------  */
-/** Draws a figure (0-9). You should call it with set=1, 
+/** Draws a figure (0-9). You should call it with set=1,
  * wait a little them call it again with set=0
  * @param figure is the figure [0-9]
- * @param x,y coordinates, 
+ * @param x,y coordinates,
  * @param set is 1 or 0 to draw or clear it
  */
 uint8_t Font::Draw(unsigned char letter,int x,int y,int set) {
@@ -146,16 +146,16 @@ uint8_t Font::Draw(unsigned char letter,int x,int y,int set) {
   charCol = pgm_read_byte_near(character);
   charRow = pgm_read_byte_near(character + 1);
 
-  while (charRow!=9) {
+  while (charRow!=LedSign::Height) {
     if (charCol>maxx) maxx=charCol;
     if (
-     charCol + x <14 && 
-     charCol + x >=0 && 
-     charRow + y <8 && 
+        charCol + x < LedSign::Width &&
+     charCol + x >=0 &&
+        charRow + y <= LedSign::Height &&
      charRow + y >=0
     ) {
         LedSign::Set(charCol + x, charRow+y, set);
-    } 
+    }
     i+=2;
 
     charCol = pgm_read_byte_near(character + i);
@@ -168,7 +168,7 @@ uint8_t Font::Draw(unsigned char letter,int x,int y,int set) {
 /* -----------------------------------------------------------------  */
 /** Draw a figure in the other direction (rotated 90°)
  * @param figure is the figure [0-9]
- * @param x,y coordinates, 
+ * @param x,y coordinates,
  * @param set is 1 or 0 to draw or clear it
 */
 uint8_t Font::Draw90(unsigned char letter,int x,int y,int set) {
@@ -197,13 +197,13 @@ uint8_t Font::Draw90(unsigned char letter,int x,int y,int set) {
   while (charRow!=9) {
     if (charCol>maxx) maxx=charCol;
     if (
-     charRow + x <14 && 
-     charRow + x >=0 && 
-     charCol + y <8 && 
+        charRow + x < LedSign::Width &&
+     charRow + x >=0 &&
+        charCol + y <= LedSign::Height &&
      charCol + y >=0
     ) {
         LedSign::Set(7 - charRow + x, charCol + y, set);
-    } 
+    }
     i+=2;
 
     charCol = pgm_read_byte_near(character + i);
