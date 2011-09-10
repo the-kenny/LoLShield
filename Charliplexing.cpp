@@ -194,8 +194,8 @@ void LedSign::Flip(bool blocking)
  * @param set if 1 : make all led ON, if not set or 0 : make all led OFF
  */
 void LedSign::Clear(int set) {
-    for(int x=0;x<14;x++)
-        for(int y=0;y<9;y++)
+    for(int x=0;x<LedSign::Width;x++)
+        for(int y=0;y<LedSign::Height;y++)
             Set(x,y,set);
 }
 
@@ -209,7 +209,7 @@ void LedSign::Horizontal(int y, int set) {
   if(y >= LedSign::Height)
     return;
 
-    for(int x=0;x<14;x++)
+    for(int x=0;x<LedSign::Width;x++)
         Set(x,y,set);
 }
 
@@ -223,7 +223,7 @@ void LedSign::Vertical(int x, int set) {
   if(x >= LedSign::Width)
     return;
 
-    for(int y=0;y<9;y++)
+    for(int y=0;y<LedSign::Height;y++)
         Set(x,y,set);
 }
 
@@ -238,8 +238,8 @@ void LedSign::Set(uint8_t x, uint8_t y, uint8_t c)
   if(x >= LedSign::Width || y >= LedSign::Height)
     return;
 
-    uint8_t pin_high = ledMap[x+y*14].high;
-    uint8_t pin_low  = ledMap[x+y*14].low;
+    uint8_t pin_high = ledMap[x+y*LedSign::Width].high;
+    uint8_t pin_low  = ledMap[x+y*LedSign::Width].low;
     // pin_low is directly the address in the led array (minus 2 because the
     // first two bytes are used for RS232 communication), but
     // as it is a two byte array we need to check pin_high also.
